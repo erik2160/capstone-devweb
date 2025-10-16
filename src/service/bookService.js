@@ -17,8 +17,14 @@ function normalizeBook(raw) {
     };
 }
 
-export async function getBooks({ page = 1, search = '', url, signal } = {}) {
-    const data = await api.fetchBooks({ page, search, url, signal });
+export async function getBooks({
+    page = 1,
+    search = '',
+    url,
+    languages,
+    signal,
+} = {}) {
+    const data = await api.fetchBooks({ page, search, url, languages, signal });
     return {
         count: data.count,
         next: data.next,

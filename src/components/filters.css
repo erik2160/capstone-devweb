@@ -1,0 +1,93 @@
+:root {
+    --f-bg: #ffffff;
+    --f-border: #e6e8eb;
+    --f-text: #111827;
+    --f-muted: #6b7280;
+    --f-ring: #2563eb;
+    --f-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --f-bg: #222222;
+        --f-border: rgb(78, 78, 78);
+        --f-text: #e5e7eb;
+        --f-muted: #9ca3af;
+        --f-ring: #60a5fa;
+        --f-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+}
+
+.filters {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 180px 200px;
+    align-items: center;
+    padding: 10px;
+    margin: 0 0 12px;
+    background: var(--f-bg);
+    border: 1px solid var(--f-border);
+    border-radius: 14px;
+    box-shadow: var(--f-shadow);
+    backdrop-filter: saturate(140%) blur(6px);
+}
+
+@media (max-width: 760px) {
+    .filters {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+/* --------- campos --------- */
+.filter-input,
+.filter-select {
+    appearance: none;
+    outline: none;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--f-border);
+    background: var(--f-bg);
+    color: var(--f-text);
+    font-size: 14px;
+    line-height: 1.2;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease,
+        transform 0.06s ease;
+}
+
+.filter-input::placeholder {
+    color: var(--f-muted);
+}
+
+/* foco e hover */
+.filter-input:hover,
+.filter-select:hover {
+    transform: translateY(-1px);
+}
+.filter-input:focus,
+.filter-select:focus {
+    border-color: var(--f-ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--f-ring) 20%, transparent);
+}
+
+.filter-select {
+    padding-right: 40px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%2399a1ad' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+.sr-only {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
