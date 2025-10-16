@@ -1,15 +1,31 @@
-import React from "react";
+import React from 'react';
 
-export default function Pagination({ page, onPageChange, hasNext, hasPrev }) {
-  return (
-    <div className="pagination">
-      <button onClick={() => onPageChange(page - 1)} disabled={!hasPrev}>
-        ← Anterior
-      </button>
-      <span>Página {page}</span>
-      <button onClick={() => onPageChange(page + 1)} disabled={!hasNext}>
-        Próxima →
-      </button>
-    </div>
-  );
+export default function Pagination({ page, hasPrev, hasNext, onPrev, onNext }) {
+    return (
+        <nav
+            aria-label="Paginação"
+            style={{
+                display: 'flex',
+                gap: 8,
+                justifyContent: 'center',
+                margin: '16px 0',
+            }}
+        >
+            <button
+                onClick={onPrev}
+                disabled={!hasPrev}
+                aria-disabled={!hasPrev}
+            >
+                ← Anterior
+            </button>
+            <span style={{ padding: '6px 10px' }}>Página {page}</span>
+            <button
+                onClick={onNext}
+                disabled={!hasNext}
+                aria-disabled={!hasNext}
+            >
+                Próxima →
+            </button>
+        </nav>
+    );
 }

@@ -54,11 +54,10 @@ body {
 .formats { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
 .format-link { font-size:0.8rem; text-decoration:none; padding:4px 8px; border-radius:6px; background:#f0f0f0; color:#333; }
 
-/* Search form */
 .search-form { display:flex; gap:8px; margin-bottom:12px; }
 .search-form input { flex:1; padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
 .search-form button { padding:8px 12px; border-radius:8px; background:var(--accent); color:#fff; border:none; cursor:pointer; }
 
-/* Pagination */
 .pagination { display:flex; gap:12px; justify-content:center; align-items:center; margin:16px 0; }
 .pagination button[disabled] { opacity:0.5; cursor:not-allowed; }
+

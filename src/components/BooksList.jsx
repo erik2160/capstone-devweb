@@ -1,42 +1,71 @@
-import React, { useState } from "react";
-import useBooks from "../hooks/useBook";
-import BookCard from "./BookCard";
-import Pagination from "./Pagination";
+import React, { useEffect, useState } from 'react';
+import useBooks from '../hooks/useBook';
+import BookCard from './BookCard';
+import Pagination from './Pagination';
+import SkeletonCard from './SkeletonCard';
 
 export default function BooksList() {
-  const { books, count, page, loading, error, goToPage, doSearch } = useBooks({ initialPage: 1 });
-  const [q, setQ] = useState("");
+    const {
+        books,
+        page,
+        loading,
+        error,
+        doSearch,
+        nextUrl,
+        prevUrl,
+        goNext,
+        goPrev,
+    } = useBooks({ initialPage: 1 });
 
-  const hasNext = books.length > 0 && (page * 32) < count;
-  const hasPrev = page > 1;
+    const [q, setQ] = useState('');
+    const hasNext = Boolean(nextUrl);
+    const hasPrev = Boolean(prevUrl);
 
-  return (
-    <section className="books-section">
-      <form
-        className="search-form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          doSearch(q.trim());
-        }}
-      >
-        <input
-          placeholder="Pesquisar título ou autor..."
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-        <button type="submit">Buscar</button>
-      </form>
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [page]);
 
-      {loading && <p>Carregando livros...</p>}
-      {error && <p className="error">Erro: {error.message}</p>}
+    useEffect(() => {
+        const t = setTimeout(() => {
+            doSearch(q.trim());
+        }, 400);
+        return () => clearTimeout(t);
+    }, [q]);
 
-      <div className="books-grid">
-        {books.map((b) => (
-          <BookCard key={b.id} book={b} />
-        ))}
-      </div>
+    const SKELETON_COUNT = 12;
 
-      <Pagination page={page} onPageChange={goToPage} hasNext={hasNext} hasPrev={hasPrev} />
-    </section>
-  );
+    return (
+        <section className="books-section">
+            <form
+                onSubmit={(e) => e.preventDefault()}
+                style={{ marginBottom: 12 }}
+            >
+                <input
+                    aria-label="Buscar livros"
+                    placeholder="Buscar por título, autor ou palavra-chave…"
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    style={{ padding: 10, width: '100%', maxWidth: 520 }}
+                />
+            </form>
+
+            {error && <p className="error">Erro: {error.message}</p>}
+
+            <div className="books-grid">
+                {loading
+                    ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+                          <SkeletonCard key={i} />
+                      ))
+                    : books.map((b) => <BookCard key={b.id} book={b} />)}
+            </div>
+
+            <Pagination
+                page={page}
+                hasPrev={hasPrev}
+                hasNext={hasNext}
+                onPrev={goPrev}
+                onNext={goNext}
+            />
+        </section>
+    );
 }
