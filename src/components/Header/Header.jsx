@@ -9,7 +9,7 @@ export default function Header() {
     return (
         <header className="header">
             <div className="logo">
-                <Link to="/">MeuSistema</Link>
+                <Link to="/">BookShelfs</Link>
             </div>
             <nav className="nav">
                 <Link to="/">Início</Link>
