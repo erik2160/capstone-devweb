@@ -5,6 +5,9 @@ import './index.css';
 import App from './App.jsx';
 import Home from './pages/Home.jsx';
 import BookDetails from './pages/BookDetails.jsx';
+import AuthPage from './pages/Auth.jsx';
+import Profile from './pages/Profile.jsx';
+import { AuthProvider } from './context/AuthContext';
 
 const router = createBrowserRouter([
     {
@@ -13,12 +16,16 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <Home /> },
             { path: 'book/:id', element: <BookDetails /> },
+            { path: 'auth', element: <AuthPage /> },
+            { path: 'profile', element: <Profile /> },
         ],
     },
 ]);
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
     </StrictMode>
 );
