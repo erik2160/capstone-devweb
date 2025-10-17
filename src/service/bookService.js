@@ -5,11 +5,14 @@ function normalizeBook(raw) {
         id: raw.id,
         title: raw.title,
         authors: (raw.authors || []).map((a) => a.name),
-        subjects: raw.subjects || [],
-        bookshelves: raw.bookshelves || [],
         languages: raw.languages || [],
         downloadCount: raw.download_count || 0,
         formats: raw.formats || {},
+        subjects: raw.subjects || [],
+        bookshelves: raw.bookshelves || [],
+        summaries: raw.summaries || [],
+        editors: (raw.editors || []).map((e) => e.name),
+        translators: (raw.translators || []).map((t) => t.name),
         thumbnail:
             (raw.formats &&
                 (raw.formats['image/jpeg'] || raw.formats['image/png'])) ||
@@ -21,7 +24,7 @@ export async function getBooks({
     page = 1,
     search = '',
     url,
-    languages,
+    languages = '',
     signal,
 } = {}) {
     const data = await api.fetchBooks({ page, search, url, languages, signal });
