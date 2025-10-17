@@ -178,3 +178,23 @@ body {
     padding: 12px;
     background: #fff;
 }
+
+.loans {
+    display: grid;
+    gap: 12px;
+    margin-top: 10px;
+}
+.loan-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+}
+.loan-item img {
+    width: 50px;
+    border-radius: 6px;
+    object-fit: cover;
+}

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getBook } from '../service/bookService';
+import { useAuth } from '../context/AuthContext';
+import * as loan from '../service/loanService';
 import './details.css';
 
 const FORMAT_PRIORITY = [
@@ -54,6 +56,9 @@ export default function BookDetails() {
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(null);
     const abortRef = useRef(null);
+    const { user } = useAuth();
+    const [hasLoaned, setHasLoaned] = useState(false);
+    const [msg, setMsg] = useState('');
 
     useEffect(() => {
         const controller = new AbortController();
@@ -85,6 +90,33 @@ export default function BookDetails() {
             controller.abort();
         };
     }, [id]);
+
+    useEffect(() => {
+        if (user && book) {
+            setHasLoaned(loan.hasLoan(user.id, book.id));
+        }
+    }, [user, book]);
+
+    const handleBorrow = () => {
+        if (!user) {
+            setMsg('Faça login para emprestar este livro.');
+            return;
+        }
+        try {
+            loan.borrowBook(user.id, book);
+            setHasLoaned(true);
+            setMsg('Livro emprestado com sucesso!');
+        } catch (e) {
+            setMsg('⚠️ ' + e.message);
+        }
+    };
+
+    const handleReturn = () => {
+        if (!user) return;
+        loan.returnBook(user.id, book.id);
+        setHasLoaned(false);
+        setMsg('Livro devolvido com sucesso!');
+    };
 
     if (loading) return <Skeleton />;
     if (err) {
@@ -194,6 +226,39 @@ export default function BookDetails() {
                                         .toUpperCase()}
                                 </a>
                             ))}
+                        </div>
+                    </section>
+
+                    <section className="section">
+                        <h2>Ações</h2>
+                        <div className="actions">
+                            {!user && (
+                                <p style={{ color: '#9ca3af' }}>
+                                    Faça login para emprestar.
+                                </p>
+                            )}
+                            {msg && (
+                                <p
+                                    style={{
+                                        color: hasLoaned ? 'green' : 'red',
+                                    }}
+                                >
+                                    {msg}
+                                </p>
+                            )}
+                            {user && !hasLoaned && (
+                                <button
+                                    className="btn primary"
+                                    onClick={handleBorrow}
+                                >
+                                    Emprestar
+                                </button>
+                            )}
+                            {user && hasLoaned && (
+                                <button className="btn" onClick={handleReturn}>
+                                    Devolver
+                                </button>
+                            )}
                         </div>
                     </section>
                 </div>
