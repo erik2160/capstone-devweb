@@ -4,7 +4,7 @@ import BooksList from '../components/BooksList';
 export default function Home() {
     return (
         <main style={{ padding: 20 }}>
-            <h1>Explorar livros (Gutendex)</h1>
+            <h1>Explorar livros</h1>
             <BooksList />
         </main>
     );

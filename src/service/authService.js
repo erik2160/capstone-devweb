@@ -74,7 +74,7 @@ export async function login({ email, password }) {
     const user = users.find((u) => u.email === e);
     if (!user) throw new Error('Usuário não encontrado.');
     const passwordHash = await hashPassword(password || '');
-    if (passwordHash !== user.passwordHash) throw new Error('Senha incorreta.');
+    if (passwordHash !== user.passwordHash) throw new Error('Usuário ou senha incorreta.');
     setSession(user.id);
     return publicUser(user);
 }

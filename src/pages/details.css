@@ -91,7 +91,14 @@
     color: var(--fg);
     padding: 8px 12px;
     border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
+
+.btn:hover {
+    background: #c4c4c5;
+}
+
 .btn:focus-visible {
     outline: 3px solid color-mix(in oklab, var(--ring) 25%, transparent);
 }
