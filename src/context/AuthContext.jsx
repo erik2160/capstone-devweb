@@ -6,7 +6,7 @@ import React, {
     useState,
     useCallback,
 } from 'react';
-import * as auth from '../service/authService';
+import * as auth from '../services/authService';
 
 const AuthCtx = createContext(null);
 

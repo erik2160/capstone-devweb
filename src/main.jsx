@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import App from './App.jsx';
-import Home from './pages/Home.jsx';
-import BookDetails from './pages/BookDetails.jsx';
-import AuthPage from './pages/Auth.jsx';
-import Profile from './pages/Profile.jsx';
+import Home from './pages/Home/Home.jsx';
+import BookDetails from './pages/BookDetails/BookDetails.jsx';
+import AuthPage from './pages/Auth/Auth.jsx';
+import Profile from './pages/Profile/Profile.jsx';
 import { AuthProvider } from './context/AuthContext';
 
 const router = createBrowserRouter([

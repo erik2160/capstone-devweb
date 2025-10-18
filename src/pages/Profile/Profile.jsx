@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { getLoansByUser, returnBook } from '../service/loanService';
+import { useAuth } from '../../context/AuthContext';
+import { getLoansByUser, returnBook } from '../../services/loanService';
 
 export default function Profile() {
     const { user, logout } = useAuth();

@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import "./filters.css";
-import useBooks from '../hooks/useBook';
-import BookCard from './BookCard';
-import Pagination from './Pagination';
-import SkeletonCard from './SkeletonCard';
+import './filters.css';
+import useBooks from '../../hooks/useBook';
+import BookCard from '../BookCard/BookCard';
+import Pagination from '../Pagination/Pagination';
+import SkeletonCard from '../SkeletonCard/SkeletonCard';
 
 export default function BooksList() {
     const {
