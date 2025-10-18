@@ -42,7 +42,7 @@ function sanitizeEmail(email) {
 }
 
 function publicUser(u) {
-    const { passwordHash, ...pub } = u;
+    const { ...pub } = u;
     return pub;
 }
 

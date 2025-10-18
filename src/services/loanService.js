@@ -12,26 +12,17 @@ function writeLoans(list) {
     localStorage.setItem(LOANS_KEY, JSON.stringify(list));
 }
 
-/**
- * Retorna todos os empréstimos do usuário
- */
 export function getLoansByUser(userId) {
     if (!userId) return [];
     return readLoans().filter((l) => l.userId === userId);
 }
 
-/**
- * Verifica se o usuário já pegou este livro
- */
 export function hasLoan(userId, bookId) {
     return !!readLoans().find(
         (l) => l.userId === userId && l.bookId === bookId
     );
 }
 
-/**
- * Empresta livro
- */
 export function borrowBook(userId, book) {
     if (!userId) throw new Error('Usuário não logado');
     const all = readLoans();
@@ -54,9 +45,6 @@ export function borrowBook(userId, book) {
     return loan;
 }
 
-/**
- * Devolve livro
- */
 export function returnBook(userId, bookId) {
     if (!userId) throw new Error('Usuário não logado');
     const updated = readLoans().filter(

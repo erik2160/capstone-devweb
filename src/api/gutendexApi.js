@@ -1,7 +1,5 @@
-// src/api/gutendexApi.js
 const BASE = 'https://gutendex.com';
 
-// LISTA (com filtro por idioma)
 export async function fetchBooks({
     page = 1,
     search = '',
@@ -14,7 +12,7 @@ export async function fetchBooks({
         `${BASE}/books?${new URLSearchParams({
             page,
             ...(search ? { search } : {}),
-            ...(languages ? { languages } : {}), // ✅ voltou
+            ...(languages ? { languages } : {}),
         }).toString()}`;
 
     const res = await fetch(finalUrl, { signal });
@@ -25,7 +23,6 @@ export async function fetchBooks({
     return res.json();
 }
 
-// DETALHES (por ids=)
 export async function fetchBookById(id, { signal } = {}) {
     const url = `${BASE}/books?ids=${id}`;
     const res = await fetch(url, { signal });

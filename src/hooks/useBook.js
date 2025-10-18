@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { getBooks } from '../service/bookService';
+import { getBooks } from '../services/bookService';
 
 function pageFromUrl(u) {
     try {

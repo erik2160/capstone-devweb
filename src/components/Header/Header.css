@@ -1,89 +1,88 @@
 * {
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-  margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
     padding: 0;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #222;
-  color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #222;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .logo a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1.5rem;
-  font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .nav {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .nav a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
 }
 
 .nav a:hover {
-  color: #1ebe24;
+    color: #1ebe24;
 }
 
 .login-btn {
-  background: #2a8ebd;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
+    background: #2a8ebd;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
 }
 
 .login-btn:hover {
-  background: #217196;
+    background: #217196;
 }
 
-/* Menu hamburguer (mobile) */
 .menu-toggle {
-  display: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  user-select: none;
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    user-select: none;
 }
 
 /* Responsivo */
 @media (max-width: 768px) {
-  .nav {
-    position: absolute;
-    top: 70px;
-    right: 0;
-    background: #222;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    display: none;
-  }
+    .nav {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        background: #222;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1rem 0;
+        display: none;
+    }
 
-  .nav.active {
-    display: flex;
-  }
+    .nav.active {
+        display: flex;
+    }
 
-  .menu-toggle {
-    display: block;
-  }
+    .menu-toggle {
+        display: block;
+    }
 }

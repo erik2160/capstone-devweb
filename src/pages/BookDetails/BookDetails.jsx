@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getBook } from '../service/bookService';
-import { useAuth } from '../context/AuthContext';
-import * as loan from '../service/loanService';
+import { getBook } from '../../services/bookService';
+import { useAuth } from '../../context/AuthContext';
+import * as loan from '../../services/loanService';
 import './details.css';
 
 const FORMAT_PRIORITY = [
