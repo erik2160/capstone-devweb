@@ -1,19 +1,19 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getLoansByUser, returnBook } from '../../services/loanService';
+import { getLoanHistoryByUser, returnBook } from '../../services/loanService'
 
 export default function Profile() {
     const { user, logout } = useAuth();
     const [loans, setLoans] = React.useState([]);
 
     React.useEffect(() => {
-        if (user) setLoans(getLoansByUser(user.id));
+        if (user) setLoans(getLoanHistoryByUser(user.id));
     }, [user]);
 
     const handleReturn = (bookId) => {
         returnBook(user.id, bookId);
-        setLoans(getLoansByUser(user.id));
+        setLoans(getLoanHistoryByUser(user.id));
     };
 
     if (!user) return <Navigate to="/auth" replace />;
@@ -44,22 +44,43 @@ export default function Profile() {
                     {loans.map((l) => (
                         <div key={l.id} className="loan-item">
                             {l.thumbnail && <img src={l.thumbnail} alt="" />}
-                            <div>
-                                <h3>{l.title}</h3>
-                                <p>{l.authors.join(', ')}</p>
-                                <p style={{ fontSize: 12, color: '#64748b' }}>
+                            <div style={{ flex: 1 }}>
+                                <h3 style={{ margin: 0 }}>{l.title}</h3>
+                                <p
+                                    style={{
+                                        margin: '2px 0 6px',
+                                        color: '#64748b',
+                                    }}
+                                >
+                                    {l.authors.join(', ')}
+                                </p>
+                                <p
+                                    style={{
+                                        fontSize: 12,
+                                        color: '#6b7280',
+                                        margin: 0,
+                                    }}
+                                >
                                     Emprestado em{' '}
                                     {new Date(
                                         l.borrowedAt
                                     ).toLocaleDateString()}
+                                    {l.returnedAt
+                                        ? ` • Devolvido em ${new Date(
+                                              l.returnedAt
+                                          ).toLocaleDateString()}`
+                                        : ' • Ativo'}
                                 </p>
                             </div>
-                            <button
-                                className="btn"
-                                onClick={() => handleReturn(l.bookId)}
-                            >
-                                Devolver
-                            </button>
+
+                            {!l.returnedAt && (
+                                <button
+                                    className="btn"
+                                    onClick={() => handleReturn(l.bookId)}
+                                >
+                                    Devolver
+                                </button>
+                            )}
                         </div>
                     ))}
                 </div>

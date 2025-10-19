@@ -58,7 +58,46 @@ export default function BookDetails() {
     const abortRef = useRef(null);
     const { user } = useAuth();
     const [hasLoaned, setHasLoaned] = useState(false);
+    const [takenByOther, setTakenByOther] = useState(false);
     const [msg, setMsg] = useState('');
+
+    useEffect(() => {
+        if (!book) return;
+        const active = loan.getActiveLoanForBook(book.id);
+        setHasLoaned(user ? loan.hasActiveLoan(user.id, book.id) : false);
+        setTakenByOther(!!active && (!user || active.userId !== user.id));
+    }, [user, book]);
+
+    useEffect(() => {
+        if (!book) return;
+        const active = loan.getActiveLoanForBook(book.id);
+        setHasLoaned(user ? loan.hasActiveLoan(user.id, book.id) : false);
+        setTakenByOther(!!active && (!user || active.userId !== user.id));
+    }, [user, book]);
+
+    const handleBorrow = () => {
+        setMsg('');
+        if (!user) {
+            setMsg('⚠️ Faça login para emprestar este livro.');
+            return;
+        }
+        try {
+            loan.borrowBook(user.id, book);
+            setHasLoaned(true);
+            setTakenByOther(false);
+            setMsg('Livro emprestado com sucesso!');
+        } catch (e) {
+            setMsg('⚠️ ' + (e.message || 'Não foi possível emprestar.'));
+        }
+    };
+
+    const handleReturn = () => {
+        if (!user) return;
+        loan.returnBook(user.id, book.id);
+        setHasLoaned(false);
+        setTakenByOther(false);
+        setMsg('Livro devolvido com sucesso!');
+    };
 
     useEffect(() => {
         const controller = new AbortController();
@@ -93,30 +132,9 @@ export default function BookDetails() {
 
     useEffect(() => {
         if (user && book) {
-            setHasLoaned(loan.hasLoan(user.id, book.id));
+            setHasLoaned(loan.hasActiveLoan(user.id, book.id));
         }
     }, [user, book]);
-
-    const handleBorrow = () => {
-        if (!user) {
-            setMsg('Faça login para emprestar este livro.');
-            return;
-        }
-        try {
-            loan.borrowBook(user.id, book);
-            setHasLoaned(true);
-            setMsg('Livro emprestado com sucesso!');
-        } catch (e) {
-            setMsg('⚠️ ' + e.message);
-        }
-    };
-
-    const handleReturn = () => {
-        if (!user) return;
-        loan.returnBook(user.id, book.id);
-        setHasLoaned(false);
-        setMsg('Livro devolvido com sucesso!');
-    };
 
     if (loading) return <Skeleton />;
     if (err) {
@@ -231,22 +249,37 @@ export default function BookDetails() {
 
                     <section className="section">
                         <h2>Ações</h2>
-                        <div className="actions">
-                            {!user && (
-                                <p style={{ color: '#9ca3af' }}>
-                                    Faça login para emprestar.
-                                </p>
-                            )}
-                            {msg && (
-                                <p
-                                    style={{
-                                        color: hasLoaned ? 'green' : 'red',
-                                    }}
-                                >
-                                    {msg}
-                                </p>
-                            )}
-                            {user && !hasLoaned && (
+                        {msg && (
+                            <p
+                                style={{
+                                    margin: '6px 0',
+                                    color: /✅|📚/.test(msg)
+                                        ? 'green'
+                                        : 'crimson',
+                                }}
+                            >
+                                {msg}
+                            </p>
+                        )}
+
+                        {!user && (
+                            <p style={{ color: '#6b7280', marginTop: 6 }}>
+                                Faça login para emprestar.
+                            </p>
+                        )}
+
+                        {user && takenByOther && !hasLoaned && (
+                            <p style={{ color: '#6b7280', marginTop: 6 }}>
+                                🚫 Este livro está emprestado por outro usuário
+                                no momento.
+                            </p>
+                        )}
+
+                        <div
+                            className="actions"
+                            style={{ display: 'flex', gap: 8, marginTop: 8 }}
+                        >
+                            {user && !hasLoaned && !takenByOther && (
                                 <button
                                     className="btn primary"
                                     onClick={handleBorrow}

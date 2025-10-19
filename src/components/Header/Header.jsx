@@ -12,10 +12,6 @@ export default function Header() {
                 <Link to="/">BookShelfs</Link>
             </div>
             <nav className="nav">
-                {/* <Link to="/">Início</Link>
-                <Link to="/sobre">Sobre</Link>
-                <Link to="/contato">Contato</Link>
-                <Link to="/ajuda">Ajuda</Link> */}
                 {user ? (
                     <Link to="/profile" className="btn-primary">
                         Perfil

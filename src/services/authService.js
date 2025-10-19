@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const USERS_KEY = 'auth.users.v1';
 const SESSION_KEY = 'auth.session.v1';
 
