@@ -5,23 +5,23 @@ import { useAuth } from '../../context/AuthContext';
 import * as loan from '../../services/loanService';
 import './details.css';
 
-const FORMAT_PRIORITY = [
-    'text/html; charset=utf-8',
-    'text/html',
-    'application/epub+zip',
-    'application/pdf',
-    'text/plain; charset=utf-8',
-    'text/plain',
-];
+// const FORMAT_PRIORITY = [
+//     'text/html; charset=utf-8',
+//     'text/html',
+//     'application/epub+zip',
+//     'application/pdf',
+//     'text/plain; charset=utf-8',
+//     'text/plain',
+// ];
 
-function sortFormats(formats) {
-    const entries = Object.entries(formats || {});
-    const score = (m) => {
-        const i = FORMAT_PRIORITY.indexOf(m);
-        return i === -1 ? 999 : i;
-    };
-    return entries.sort(([a], [b]) => score(a) - score(b));
-}
+// function sortFormats(formats) {
+//     const entries = Object.entries(formats || {});
+//     const score = (m) => {
+//         const i = FORMAT_PRIORITY.indexOf(m);
+//         return i === -1 ? 999 : i;
+//     };
+//     return entries.sort(([a], [b]) => score(a) - score(b));
+// }
 
 function Skeleton() {
     return (
@@ -60,12 +60,20 @@ export default function BookDetails() {
     const [hasLoaned, setHasLoaned] = useState(false);
     const [takenByOther, setTakenByOther] = useState(false);
     const [msg, setMsg] = useState('');
+    const [hasOtherActive, setHasOtherActive] = useState(false);
 
     useEffect(() => {
         if (!book) return;
         const active = loan.getActiveLoanForBook(book.id);
         setHasLoaned(user ? loan.hasActiveLoan(user.id, book.id) : false);
         setTakenByOther(!!active && (!user || active.userId !== user.id));
+
+        if (user) {
+            const myActive = loan.getUserActiveLoan(user.id);
+            setHasOtherActive(!!myActive && myActive.bookId !== book.id);
+        } else {
+            setHasOtherActive(false);
+        }
     }, [user, book]);
 
     useEffect(() => {
@@ -76,18 +84,17 @@ export default function BookDetails() {
     }, [user, book]);
 
     const handleBorrow = () => {
-        setMsg('');
         if (!user) {
             setMsg('⚠️ Faça login para emprestar este livro.');
             return;
         }
+
         try {
             loan.borrowBook(user.id, book);
             setHasLoaned(true);
-            setTakenByOther(false);
             setMsg('Livro emprestado com sucesso!');
         } catch (e) {
-            setMsg('⚠️ ' + (e.message || 'Não foi possível emprestar.'));
+            setMsg('⚠️ ' + e.message);
         }
     };
 
@@ -151,7 +158,7 @@ export default function BookDetails() {
     }
     if (!book) return null;
 
-    const formats = sortFormats(book.formats);
+    // const formats = sortFormats(book.formats);
     const subjects = book.subjects?.slice(0, 12) || [];
     const languages = book.languages?.join(', ') || '—';
     const authors = book.authors?.join(', ') || '—';
@@ -226,7 +233,7 @@ export default function BookDetails() {
                         </section>
                     )}
 
-                    <section className="section">
+                    {/* <section className="section">
                         <h2>Formatos</h2>
                         <div className="formats">
                             {formats.slice(0, 12).map(([mime, url]) => (
@@ -245,7 +252,7 @@ export default function BookDetails() {
                                 </a>
                             ))}
                         </div>
-                    </section>
+                    </section> */}
 
                     <section className="section">
                         <h2>Ações</h2>
@@ -268,25 +275,44 @@ export default function BookDetails() {
                             </p>
                         )}
 
-                        {user && takenByOther && !hasLoaned && (
-                            <p style={{ color: '#6b7280', marginTop: 6 }}>
-                                🚫 Este livro está emprestado por outro usuário
-                                no momento.
+                        {user && hasOtherActive && !hasLoaned && (
+                            <p
+                                style={{
+                                    color: '#b91c1c',
+                                    marginTop: 6,
+                                    fontWeight: 600,
+                                }}
+                            >
+                                Você já tem um empréstimo ativo. Devolva-o
+                                para pegar outro.
                             </p>
                         )}
+
+                        {user &&
+                            takenByOther &&
+                            !hasLoaned &&
+                            !hasOtherActive && (
+                                <p style={{ color: '#6b7280', marginTop: 6 }}>
+                                    Este livro está emprestado por outro
+                                    usuário no momento.
+                                </p>
+                            )}
 
                         <div
                             className="actions"
                             style={{ display: 'flex', gap: 8, marginTop: 8 }}
                         >
-                            {user && !hasLoaned && !takenByOther && (
-                                <button
-                                    className="btn primary"
-                                    onClick={handleBorrow}
-                                >
-                                    Emprestar
-                                </button>
-                            )}
+                            {user &&
+                                !hasLoaned &&
+                                !takenByOther &&
+                                !hasOtherActive && (
+                                    <button
+                                        className="btn primary"
+                                        onClick={handleBorrow}
+                                    >
+                                        Emprestar
+                                    </button>
+                                )}
                             {user && hasLoaned && (
                                 <button className="btn" onClick={handleReturn}>
                                     Devolver

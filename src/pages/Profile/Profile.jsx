@@ -1,7 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getLoanHistoryByUser, returnBook } from '../../services/loanService'
+import {
+    getLoanHistoryByUser,
+    returnBook,
+    isOverdue,
+    daysLeft,
+} from '../../services/loanService';
 
 export default function Profile() {
     const { user, logout } = useAuth();
@@ -34,55 +39,88 @@ export default function Profile() {
                 </p>
             </div>
 
-            <h2 style={{ marginTop: 20 }}>Meus empréstimos</h2>
+            <h2 style={{ marginTop: 20 }}>📚 Meus empréstimos</h2>
             {loans.length === 0 ? (
                 <p style={{ color: '#6b7280' }}>
                     Você ainda não tem livros emprestados.
                 </p>
             ) : (
                 <div className="loans">
-                    {loans.map((l) => (
-                        <div key={l.id} className="loan-item">
-                            {l.thumbnail && <img src={l.thumbnail} alt="" />}
-                            <div style={{ flex: 1 }}>
-                                <h3 style={{ margin: 0 }}>{l.title}</h3>
-                                <p
-                                    style={{
-                                        margin: '2px 0 6px',
-                                        color: '#64748b',
-                                    }}
-                                >
-                                    {l.authors.join(', ')}
-                                </p>
-                                <p
-                                    style={{
-                                        fontSize: 12,
-                                        color: '#6b7280',
-                                        margin: 0,
-                                    }}
-                                >
-                                    Emprestado em{' '}
-                                    {new Date(
-                                        l.borrowedAt
-                                    ).toLocaleDateString()}
-                                    {l.returnedAt
-                                        ? ` • Devolvido em ${new Date(
-                                              l.returnedAt
-                                          ).toLocaleDateString()}`
-                                        : ' • Ativo'}
-                                </p>
-                            </div>
+                    {loans.map((l) => {
+                        const overdue = isOverdue(l);
+                        const left = daysLeft(l);
+                        return (
+                            <div key={l.id} className="loan-item">
+                                {l.thumbnail && (
+                                    <img src={l.thumbnail} alt="" />
+                                )}
+                                <div style={{ flex: 1 }}>
+                                    <h3 style={{ margin: 0 }}>{l.title}</h3>
+                                    <p
+                                        style={{
+                                            margin: '2px 0 6px',
+                                            color: '#64748b',
+                                        }}
+                                    >
+                                        {(l.authors || []).join(', ')}
+                                    </p>
 
-                            {!l.returnedAt && (
-                                <button
-                                    className="btn"
-                                    onClick={() => handleReturn(l.bookId)}
-                                >
-                                    Devolver
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                                    <p style={{ fontSize: 12, margin: 0 }}>
+                                        <strong>Emprestado em:</strong>{' '}
+                                        {new Date(
+                                            l.borrowedAt
+                                        ).toLocaleDateString()}{' '}
+                                        • <strong>Devolve até:</strong>{' '}
+                                        {new Date(l.dueAt).toLocaleDateString()}{' '}
+                                        {l.returnedAt ? (
+                                            <>
+                                                •{' '}
+                                                <span
+                                                    style={{ color: '#64748b' }}
+                                                >
+                                                    Devolvido em{' '}
+                                                    {new Date(
+                                                        l.returnedAt
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                            </>
+                                        ) : overdue ? (
+                                            <>
+                                                •{' '}
+                                                <span
+                                                    style={{
+                                                        color: '#b91c1c',
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    ATRASADO ({Math.abs(left)}{' '}
+                                                    dia(s))
+                                                </span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                •{' '}
+                                                <span
+                                                    style={{ color: '#166534' }}
+                                                >
+                                                    {left} dia(s) restantes
+                                                </span>
+                                            </>
+                                        )}
+                                    </p>
+                                </div>
+
+                                {!l.returnedAt && (
+                                    <button
+                                        className="btn"
+                                        onClick={() => handleReturn(l.bookId)}
+                                    >
+                                        Devolver
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
             )}
 

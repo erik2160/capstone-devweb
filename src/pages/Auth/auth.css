@@ -1,6 +1,6 @@
 /* --- layout geral --- */
 .auth-page {
-    min-height: calc(100vh - 60px); /* desconta o header */
+    min-height: calc(100vh - 60px); 
     display: flex;
     justify-content: center;
     align-items: center;
