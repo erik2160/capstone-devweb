@@ -82,7 +82,7 @@ npm run dev
 http://localhost:5173
 ```
 
-# Instructions
+# Instruções
 1. Na página inicial, pesquise um livro pelo título, autor ou palavra-chave.
 2. Utilize os filtros de idioma e categoria para refinar a busca.
 3. Clique em um livro para abrir a página de detalhes.
