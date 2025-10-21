@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=BBH+Sans+Hegarty&family=Jost:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.searchTitle {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+}

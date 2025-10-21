@@ -18,7 +18,7 @@
 }
 
 .filters {
-    position: sticky;
+    position: relative;
     top: 0;
     z-index: 10;
     display: grid;
@@ -41,7 +41,6 @@
     }
 }
 
-/* --------- campos --------- */
 .filter-input,
 .filter-select {
     appearance: none;

@@ -1,6 +1,5 @@
 * {
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -41,48 +40,45 @@
     color: #1ebe24;
 }
 
-.login-btn {
-    background: #2a8ebd;
-    color: #fff;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.login-btn:hover {
-    background: #217196;
-}
-
-.menu-toggle {
+.mobile-profile {
     display: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    user-select: none;
+    color: #fff;
 }
 
-/* Responsivo */
+.mobile-profile a {
+    color: #fff;
+}
+
 @media (max-width: 768px) {
-    .nav {
-        position: absolute;
-        top: 70px;
+    .header {
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        left: 0;
         right: 0;
+        justify-content: space-between;
         background: #222;
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-        gap: 1.5rem;
-        padding: 1rem 0;
+        padding: 0.8rem 2rem;
+        border-top: 1px solid #333;
+    }
+
+    .logo {
+        flex: 1;
+        text-align: center;
+    }
+
+    .logo a {
+        font-size: 1.2rem;
+    }
+
+    .nav {
         display: none;
     }
 
-    .nav.active {
-        display: flex;
-    }
-
-    .menu-toggle {
+    .mobile-profile {
         display: block;
+        position: absolute;
+        right: 1.5rem;
+        bottom: 0.9rem;
     }
 }
