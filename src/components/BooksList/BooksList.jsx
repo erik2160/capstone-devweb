@@ -10,6 +10,7 @@ export default function BooksList() {
         books,
         page,
         loading,
+        booting,
         error,
         doSearch,
         nextUrl,
@@ -18,7 +19,7 @@ export default function BooksList() {
         goPrev,
         lang,
         setLanguage,
-    } = useBooks({ initialPage: 1 });
+    } = useBooks({ initialPage: 1, minSkeletonMs: 500 });
 
     const [q, setQ] = useState('');
     const [category, setCategory] = useState('');
@@ -32,7 +33,7 @@ export default function BooksList() {
     useEffect(() => {
         const t = setTimeout(() => doSearch(q.trim()), 400);
         return () => clearTimeout(t);
-    }, [q]);
+    }, [q, doSearch]);
 
     const CATEGORY_RULES = useMemo(
         () => [
@@ -85,7 +86,7 @@ export default function BooksList() {
         });
     }, [books, category, CATEGORY_RULES]);
 
-    const SKELETON_COUNT = 12;
+    const SKELETON_COUNT = 14;
 
     return (
         <section className="books-section">
@@ -143,12 +144,11 @@ export default function BooksList() {
                     ))}
                 </select>
             </div>
-            {}
 
             {error && <p className="error">Erro: {error.message}</p>}
 
             <div className="books-grid">
-                {loading
+                {booting || loading || books.length === 0
                     ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
                           <SkeletonCard key={i} />
                       ))
@@ -165,7 +165,7 @@ export default function BooksList() {
                 onNext={goNext}
             />
 
-            {!loading && category && (
+            {!loading && !booting && category && (
                 <p style={{ textAlign: 'center', marginTop: 4, opacity: 0.8 }}>
                     Mostrando {filteredBooks.length} de {books.length}{' '}
                     resultados nesta página (categoria “

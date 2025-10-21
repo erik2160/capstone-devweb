@@ -1,22 +1,37 @@
 import React from 'react';
-import Skeleton from '@mui/material/Skeleton';
-import Box from '@mui/material/Box';
+import './skeleton.css';
 
 export default function SkeletonCard() {
     return (
-        <Box>
-            <Skeleton
-                variant="rectangular"
-                height={240}
-                sx={{ borderRadius: 2, mb: 1 }}
-            />
-            <Skeleton variant="text" height={28} />
-            <Skeleton variant="text" height={20} width="70%" />
-            <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
-                <Skeleton variant="rounded" width={64} height={24} />
-                <Skeleton variant="rounded" width={64} height={24} />
-                <Skeleton variant="rounded" width={64} height={24} />
-            </Box>
-        </Box>
+        <article
+            className="book-card card-with-footer skeleton"
+            aria-hidden="true"
+        >
+            {}
+            <div className="top">
+                <div className="thumb">
+                    <div className="sk-img shimmer" />
+                </div>
+
+                <div className="info">
+                    <div className="sk-line sk-title shimmer" />
+                    <div className="sk-line sk-title short shimmer" />
+
+                    <div className="sk-line sk-sub shimmer" />
+                    <div className="sk-line sk-sub short shimmer" />
+                </div>
+            </div>
+
+            {}
+            <div className="cats">
+                <span className="sk-pill shimmer" />
+                <span className="sk-pill shimmer" />
+                <span className="sk-pill shimmer" />
+                <span className="sk-pill shimmer" />
+            </div>
+
+            {}
+            <div className="avail sk-footer shimmer" />
+        </article>
     );
 }
