@@ -39,7 +39,7 @@ export default function Profile() {
                 </p>
             </div>
 
-            <h2 style={{ marginTop: 20 }}>📚 Meus empréstimos</h2>
+            <h2 style={{ marginTop: 20 }}>Meus empréstimos</h2>
             {loans.length === 0 ? (
                 <p style={{ color: '#6b7280' }}>
                     Você ainda não tem livros emprestados.
