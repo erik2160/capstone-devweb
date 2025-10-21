@@ -63,7 +63,7 @@ https://
 # Rodando o projeto
 **1. Clone o repositorio**
 ```git bash
-git clone https://github.com/erik2160/capstone-devweb
+git clone git@github.com:erik2160/capstone-devweb.git
 cd webdev-capstone
 ```
 
