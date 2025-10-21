@@ -77,7 +77,7 @@ npm install
 npm run dev
 ```
 
-**4. Accesse no seu navegador***
+**4. Accesse no seu navegador**
 ```bash
 http://localhost:5173
 ```
