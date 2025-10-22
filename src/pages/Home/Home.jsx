@@ -5,7 +5,7 @@ import './Home.css';
 export default function Home() {
     return (
         <main style={{ padding: 20 }}>
-            <h1 className='searchTitle'>Explorar livros</h1>
+            <h1 className='searchTitle'>Explorar Livros</h1>
             <BooksList />
         </main>
     );
