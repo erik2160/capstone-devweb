@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { getBooks } from '../services/bookService'
+import { getBooks } from '../services/bookService';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -74,21 +74,50 @@ export default function useBooks({
     }, []);
 
     const doSearch = useCallback(
-        (q) => runFetch({ page: 1, search: q, languages: lang }),
-        [runFetch, lang]
+        (q) => {
+            if (q === search) return;
+            runFetch({ page: 1, search: q, languages: lang });
+        },
+        [runFetch, lang, search]
     );
+
     const setLanguage = useCallback(
         (l) => runFetch({ page: 1, search, languages: l || '' }),
         [runFetch, search]
     );
+
+    function getPageFromUrl(url) {
+        if (!url) return null;
+        try {
+            const u = new URL(url);
+            const pg = u.searchParams.get('page');
+            return pg ? Number(pg) : null;
+        } catch {
+            return null;
+        }
+    }
+
     const goNext = useCallback(() => {
-        if (nextUrl) runFetch({ url: nextUrl });
+        if (!nextUrl) return;
+        const nextPage = getPageFromUrl(nextUrl);
+        if (nextPage) setPage(nextPage);
+        else setPage((p) => p + 1);
+        runFetch({ url: nextUrl });
     }, [nextUrl, runFetch]);
+
     const goPrev = useCallback(() => {
-        if (prevUrl) runFetch({ url: prevUrl });
+        if (!prevUrl) return;
+        const prevPage = getPageFromUrl(prevUrl);
+        if (prevPage) setPage(prevPage);
+        else setPage((p) => Math.max(1, p - 1));
+        runFetch({ url: prevUrl });
     }, [prevUrl, runFetch]);
+
     const goToPage = useCallback(
-        (p) => runFetch({ page: p, search, languages: lang }),
+        (p) => {
+            setPage(p);
+            runFetch({ page: p, search, languages: lang });
+        },
         [runFetch, search, lang]
     );
 

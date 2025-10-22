@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import './filters.css';
 import useBooks from '../../hooks/useBook';
 import BookCard from '../BookCard/BookCard';
@@ -22,6 +22,7 @@ export default function BooksList() {
     } = useBooks({ initialPage: 1, minSkeletonMs: 500 });
 
     const [q, setQ] = useState('');
+    const firstSearch = useRef(true);
     const [category, setCategory] = useState('');
     const hasNext = Boolean(nextUrl);
     const hasPrev = Boolean(prevUrl);
@@ -31,10 +32,14 @@ export default function BooksList() {
     }, [page]);
 
     useEffect(() => {
+        if (firstSearch.current) {
+            firstSearch.current = false;
+            return;
+        }
         const t = setTimeout(() => doSearch(q.trim()), 400);
         return () => clearTimeout(t);
     }, [q, doSearch]);
-
+    
     const CATEGORY_RULES = useMemo(
         () => [
             { key: 'fiction', label: 'Ficção', re: /(fiction|novel|romance)/i },
