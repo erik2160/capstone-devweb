@@ -85,7 +85,7 @@ export default function BookDetails() {
 
     const handleBorrow = () => {
         if (!user) {
-            setMsg('⚠️ Faça login para emprestar este livro.');
+            setMsg('Faça login para emprestar este livro.');
             return;
         }
 

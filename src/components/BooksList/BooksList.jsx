@@ -15,7 +15,9 @@ export default function BooksList() {
         doSearch,
         nextUrl,
         prevUrl,
+        count,
         goNext,
+        goToPage,
         goPrev,
         lang,
         setLanguage,
@@ -26,6 +28,8 @@ export default function BooksList() {
     const [category, setCategory] = useState('');
     const hasNext = Boolean(nextUrl);
     const hasPrev = Boolean(prevUrl);
+    const pageSize = books.length || 32;
+    const totalPages = Math.max(1, Math.ceil((count || 0) / pageSize));
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -39,7 +43,7 @@ export default function BooksList() {
         const t = setTimeout(() => doSearch(q.trim()), 400);
         return () => clearTimeout(t);
     }, [q, doSearch]);
-    
+
     const CATEGORY_RULES = useMemo(
         () => [
             { key: 'fiction', label: 'Ficção', re: /(fiction|novel|romance)/i },
@@ -165,9 +169,11 @@ export default function BooksList() {
             <Pagination
                 page={page}
                 hasPrev={hasPrev}
+                totalPages={totalPages}
                 hasNext={hasNext}
                 onPrev={goPrev}
                 onNext={goNext}
+                onGoToPage={goToPage}
             />
 
             {!loading && !booting && category && (

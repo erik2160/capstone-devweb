@@ -1,0 +1,90 @@
+.pagination {
+    display: grid;
+    gap: 8px;
+    justify-items: center;
+    margin: 12px 0;
+}
+
+.pag-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.pag-btn,
+.pag-num,
+.pag-go {
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #111827;
+    border-radius: 8px;
+    padding: 6px 10px;
+    line-height: 1;
+    cursor: pointer;
+}
+.pag-btn[disabled],
+.pag-num[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pag-list {
+    list-style: none;
+    display: flex;
+    gap: 4px;
+    margin: 0 6px;
+    padding: 0;
+    align-items: center;
+}
+
+.pag-num.is-active {
+    background: #2563eb;
+    color: #fff;
+    border-color: #2563eb;
+}
+
+.pag-dots {
+    padding: 0 4px;
+    color: #6b7280;
+}
+
+.pag-goto {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pag-input {
+    width: 90px;
+    min-height: 34px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    outline: none;
+}
+.pag-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+.pag-info {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* mobile tweaks */
+@media (max-width: 480px) {
+    .pag-row {
+        gap: 4px;
+    }
+    .pag-list {
+        gap: 2px;
+    }
+    .pag-input {
+        width: 74px;
+    }
+}
